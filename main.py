@@ -8,7 +8,7 @@ import pandas as pd
 from file_uploader import FileUploader
 from JSON_uploader import JSONFileUploader
 from transformationer import DataTransformer
-
+from snowflake_uploader import SnowflakeUploader
 
 def display_text_as_large(text):
     ''' Define the HTML structure with style '''
