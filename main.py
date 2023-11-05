@@ -91,7 +91,7 @@ def main():
     }
 
     # initialize the snowflake_uploader
-    snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
+    snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
     
     # Display the connection success message
     session = create_session()
