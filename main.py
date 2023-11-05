@@ -32,7 +32,7 @@ def main():
     myFile = FileUploader()
 
     # Use the upload_file method to let the user upload a file
-    label = "Upload a Parquet file."
+    label = "Upload a Parquet file"
     uploaded_file = myFile.upload_file(label, "parquet")
     
 
