@@ -19,7 +19,7 @@ class DataTransformer:
                         elif operation == 'map':
                             self.parquet_data_df[column] = self.parquet_data_df[column].map(params)
                         elif operation == 'to_datetime':
-                            self.parquet_data_df[column] = df.to_datetime(self.parquet_data_df[column], format=params['format'])
+                            self.parquet_data_df[column] = pd.to_datetime(self.parquet_data_df[column], format=params['format'])
                         else:
                             print(f"Unsupported operation: {operation}")
             st.success("Transformations applied successfully!")
