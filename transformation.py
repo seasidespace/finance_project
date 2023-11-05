@@ -4,27 +4,27 @@ import json
 
 class DataTransformer:
     def __init__(self, parquet_data, json_rules):
-        self.df = parquet_data
-        self.transformation_rules = json_rules
+        self.parquet_data_df = parquet_data
+        self.transformation_rules_df = json_rules
 
     def apply_transformations(self):
         try:
-            for column, transformation in self.transformation_rules.items():
-                if column in self.df.columns:
+            for rule in self.transformation_rules_df:
+                column = rule["Column"]
+                transformation = rule["Transformation"]
+                if column in self.parquet_data_df.columns:
                     for operation, params in transformation.items():
                         if operation == 'astype':
-                            self.df[column] = self.df[column].astype(params)
+                            self.parquet_data_df[column] = self.parquet_data_df[column].astype(params)
                         elif operation == 'map':
-                            self.df[column] = self.df[column].map(params)
+                            self.parquet_data_df[column] = self.parquet_data_df[column].map(params)
                         elif operation == 'to_datetime':
-                            self.df[column] = pd.to_datetime(self.df[column], format=params['format'])
+                            self.parquet_data_df[column] = pd.to_datetime(self.parquet_data_df[column], format=params['format'])
                         else:
-                            st.error(f"Unsupported operation: {operation}")
-                else:
-                    st.warning(f"Column {column} not in DataFrame")
+                            print(f"Unsupported operation: {operation}")
             st.success("Transformations applied successfully!")
         except Exception as e:
             st.error(f"An error occurred while applying transformations: {e}")
 
     def get_transformed_dataframe(self):
-        return self.df
+        return self.parquet_data_df

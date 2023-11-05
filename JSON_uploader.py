@@ -35,3 +35,12 @@ class JSONFileUploader:
             # Display the DataFrame in Streamlit
             st.dataframe(self.dataframe)
 
+    def get_dataframe(self):
+        """Get method for converted JSON data to a DataFrame."""
+        if self.json_data is not None:
+            # Convert the JSON object to a pandas DataFrame
+            self.dataframe = pd.DataFrame([
+                {"Column": key, "Transformation": str(value)}
+                for key, value in self.json_data.items()
+            ])
+        return self.dataframe

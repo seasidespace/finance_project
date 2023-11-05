@@ -1,69 +1,64 @@
-import snowflake.connector
-from snowflake.snowpark import Session
-from snowflake.sqlalchemy import URL
-import streamlit as st
-import openai
-from file_uploader import FileUploader
 import pandas as pd
-
-pd.set_option('display.max_columns', None)
-
-# Replace 'your_file.parquet' with the path to your actual Parquet file
-df = pd.read_parquet('/workspaces/finance_project/sd254_cards_de.parquet', engine='pyarrow')
-# or, if using fastparquet
-# df = pd.read_parquet('your_file.parquet', engine='fastparquet')
-
-print(df.info())
-print(df.head())
+import numpy as np
 
 
-'''
-Data columns (total 13 columns):
- #   Column                 Non-Null Count  Dtype 
----  ------                 --------------  ----- 
- 0   User                   6146 non-null   int64 
- 1   CARD INDEX             6146 non-null   int64 
- 2   Card Brand             6146 non-null   object
- 3   Card Type              6146 non-null   object
- 4   Card Number            6146 non-null   int64 
- 5   Expires                6146 non-null   object
- 6   CVV                    6146 non-null   int64 
- 7   Has Chip               6146 non-null   object
- 8   Cards Issued           6146 non-null   int64 
- 9   Credit Limit           6146 non-null   object
- 10  Acct Open Date         6146 non-null   object
- 11  Year PIN last Changed  6146 non-null   int64 
- 12  Card on Dark Web       6146 non-null   object
+# Assuming num_samples is defined and is a large number
+num_samples = 100
 
+# Define a start date that, when added to num_samples, will not go out of bounds
+start_date = '2021-01-01'
 
-{
-    "Card Number": {"astype": "str"),
-    "Has Chip": {"map":("YES" :1, "NO"：0)},
-    "Expires": {"to_datetime": {"format": "%m/%Y"}},
-    "Card Limit": {"astype": "int"},
-    "Acct Open Date": {"to_datetime": {"format": "%m/%Y"}},
-    "Card on Dark Web": {"map":("YES" :1, "NO"：0)}
-}
+# Calculate the end date to ensure it's within pandas Timestamp bounds
+end_date = pd.Timestamp(start_date) + pd.DateOffset(months=num_samples - 1)
 
-'''
+# If the end date is out of bounds, you need to adjust your num_samples or start_date
+if end_date.year > 2262:
+    raise ValueError("The end date is out of bounds. Adjust the num_samples or start_date.")
 
-import pandas as pd
-import json
+# Now create the date range safely
+date_range = pd.date_range(start=start_date, periods=num_samples, freq='M').strftime('%m/%Y')
 
-# Your JSON structure
-json_data = {
-    "Card Number": {"astype": "str"},
-    "Has Chip": {"map": {"YES": 1, "NO": 0}},
-    "Expires": {"to_datetime": {"format": "%m/%Y"}},
-    "Card Limit": {"astype": "int"},
-    "Acct Open Date": {"to_datetime": {"format": "%m/%Y"}},
-    "Card on Dark Web": {"map": {"YES": 1, "NO": 0}}
-}
+# Define the DataFrame from the parquet data dictionary
+parquet_data_df = pd.DataFrame({
+    "User": np.random.randint(1, 10000, num_samples),
+    "CARD INDEX": np.random.randint(1, 10000, num_samples),
+    "Card Brand": np.random.choice(['Visa', 'MasterCard', 'Amex'], num_samples),
+    "Card Type": np.random.choice(['Debit', 'Credit'], num_samples),
+    "Card Number": np.random.randint(1e15, 1e16, num_samples),  # 16 digit card number
+    "Expires": pd.date_range(start='2021-01-01', periods=num_samples, freq='M').strftime('%m/%Y'),
+    "CVV": np.random.randint(100, 1000, num_samples),
+    "Has Chip": np.random.choice(['YES', 'NO'], num_samples),
+    "Cards Issued": np.random.randint(1, 5, num_samples),
+    "Credit Limit": np.random.choice(['5000', '10000', '20000'], num_samples),
+    "Acct Open Date": pd.date_range(start='2010-01-01', periods=num_samples, freq='M').strftime('%m/%Y'),
+    "Year PIN last Changed": np.random.randint(2000, 2023, num_samples),
+    "Card on Dark Web": np.random.choice(['YES', 'NO'], num_samples),
+})
 
-# Convert the JSON object to a DataFrame
-transformation_df = pd.DataFrame([
-    {"Column": key, "Transformation": str(value)}
-    for key, value in json_data.items()
-])
-# Print the DataFrame
-print(transformation_df)
+# Define the transformation rules
+json_rules = [
+    {"Column": "Card Number", "Transformation": {'astype': 'str'}},
+    {"Column": "Has Chip", "Transformation": {'map': {'YES': 1, 'NO': 0}}},
+    {"Column": "Expires", "Transformation": {'to_datetime': {'format': '%m/%Y'}}},
+    {"Column": "Card Limit", "Transformation": {'astype': 'int'}},
+    {"Column": "Acct Open Date", "Transformation": {'to_datetime': {'format': '%m/%Y'}}},
+    {"Column": "Card on Dark Web", "Transformation": {'map': {'YES': 1, 'NO': 0}}}
+]
+
+# Apply the transformations
+for rule in json_rules:
+    column = rule["Column"]
+    transformation = rule["Transformation"]
+    if column in parquet_data_df.columns:
+        for operation, params in transformation.items():
+            if operation == 'astype':
+                parquet_data_df[column] = parquet_data_df[column].astype(params)
+            elif operation == 'map':
+                parquet_data_df[column] = parquet_data_df[column].map(params)
+            elif operation == 'to_datetime':
+                parquet_data_df[column] = pd.to_datetime(parquet_data_df[column], format=params['format'])
+            else:
+                print(f"Unsupported operation: {operation}")
+
+# Check the DataFrame after transformations
+print(parquet_data_df.head())
