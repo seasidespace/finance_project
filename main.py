@@ -62,7 +62,7 @@ def main():
     # Initialize transformer to None
     transformer = None
     transformed_df = None
-    
+
     # Check if both files are uploaded and create the transformer object
     if df_Parquet is not None and json_rule is not None:
         transformer = DataTransformer(df_Parquet, json_uploader.get_dataframe())
@@ -88,7 +88,6 @@ def main():
         "schema": st.secrets["connections"]["snowpark"]["schema"],
         "role": st.secrets["connections"]["snowpark"]["role"],
     }
-
 
     # initialize the snowflake_uploader
     snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
