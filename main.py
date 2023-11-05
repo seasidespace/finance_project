@@ -81,6 +81,10 @@ def main():
     # title for prompting file upload to snowflake 
     display_text_as_large("4. Export Data to Snowflake SQL Database")
 
+    # Display the connection success message
+    session = create_session()
+    st.success("Connected to Snowflake!")
+
     if transformed_df is not None:
         connection_params = {
             "user": st.secrets["connections"]["snowpark"]["user"],
@@ -93,12 +97,8 @@ def main():
         }
 
         # initialize the snowflake_uploader
-        snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
-        
-        # Display the connection success message
-        session = create_session()
-        st.success("Connected to Snowflake!")
-
+        snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
+        # upload to snowflake
         snowflake_uploader.upload_dataframe()
 
 main()
