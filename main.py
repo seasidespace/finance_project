@@ -76,25 +76,30 @@ def main():
         else:
             st.error("Please upload both Parquet and JSON files before applying transformations.")
 
+
+    # Upload to Snowflake Section 
+    connection_params = {
+        "user": st.secrets["connections"]["snowpark"]["user"],
+        "password": st.secrets["connections"]["snowpark"]["password"],
+        "account": st.secrets["connections"]["snowpark"]["account"],
+        "warehouse": st.secrets["connections"]["snowpark"]["warehouse"],
+        "database": st.secrets["connections"]["snowpark"]["database"],
+        "schema": st.secrets["connections"]["snowpark"]["schema"],
+        "role": st.secrets["connections"]["snowpark"]["role"],
+    }
+
+
+    # initialize the snowflake_uploader
+    snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
+    
     # Display the connection success message
     session = create_session()
     st.success("Connected to Snowflake!")
 
-    # Upload to Snowflake Section 
-    connection_params = {
-        "user": st.secrets.connections.snowpark.user,
-        "password": st.secrets.connections.snowpark.password,
-        "account": st.secrets.connections.snowpark.account,
-        "warehouse": st.secrets.connections.snowpark.warehouse,
-        "database": st.secrets.connections.snowpark.database,
-        "schema": st.secrets.connections.snowpark.schema,
-        "role": st.secrets.connections.snowpark.role
-    }
-
-    # Assuming GLOBAL_DF is your global DataFrame variable
-    snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
     snowflake_uploader.upload_dataframe()
 
 main()
+
+
 
     
