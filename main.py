@@ -95,11 +95,12 @@ def main():
     session = create_session()
     st.success("Connected to Snowflake!")
 
+    transformed_df = transformer.get_transformed_dataframe()
     if transformed_df is not None:
         # initialize the snowflake_uploader
         snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
-    # upload to snowflake
-    snowflake_uploader.upload_dataframe()
+        # upload to snowflake
+        snowflake_uploader.upload_dataframe()
 
 main()
 
