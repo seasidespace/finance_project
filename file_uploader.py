@@ -9,6 +9,7 @@ class FileUploader:
     def upload_file(self, label, file_type):
         uploaded_file = st.file_uploader(label, type=[file_type])
         if uploaded_file is not None:
+            st.success("Parquet file uploaded successfully!")
             return uploaded_file
         else: 
             st.error("Please upload a Parquet file.")
