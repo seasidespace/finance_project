@@ -7,7 +7,7 @@ import pandas as pd
 
 from file_uploader import FileUploader
 from JSON_uploader import JSONFileUploader
-from transformation import DataTransformer
+from transformationer import DataTransformer
 
 
 def display_text_as_large(text):
@@ -23,6 +23,12 @@ def display_text_as_large(text):
         </div>
         """
     st.markdown(large_text_html, unsafe_allow_html=True)
+
+
+# Establish Snowflake session
+@st.cache_resource
+def create_session():
+    return Session.builder.configs(st.secrets.connections.snowpark).create()
 
 
 def main():
@@ -69,6 +75,25 @@ def main():
                 st.dataframe(transformed_df)
         else:
             st.error("Please upload both Parquet and JSON files before applying transformations.")
+
+    # Display the connection success message
+    session = create_session()
+    st.success("Connected to Snowflake!")
+
+    # Upload to Snowflake Section 
+    connection_params = {
+        "user": st.secrets.connections.snowpark.user,
+        "password": st.secrets.connections.snowpark.password,
+        "account": st.secrets.connections.snowpark.account,
+        "warehouse": st.secrets.connections.snowpark.warehouse,
+        "database": st.secrets.connections.snowpark.database,
+        "schema": st.secrets.connections.snowpark.schema,
+        "role": st.secrets.connections.snowpark.role
+    }
+
+    # Assuming GLOBAL_DF is your global DataFrame variable
+    snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
+    snowflake_uploader.upload_dataframe()
 
 main()
 
