@@ -52,7 +52,7 @@ for rule in json_rules:
     if column in parquet_data_df.columns:
         for operation, params in transformation.items():
             if operation == 'astype':
-                parquet_data_df[column] = parquet_data_df[column].astype(params)
+                parquet_data_df[column] = parquet_data_df[column].str.replace(r'\D', '', regex=True).astype(params)
             elif operation == 'map':
                 parquet_data_df[column] = parquet_data_df[column].map(params)
             elif operation == 'to_datetime':
