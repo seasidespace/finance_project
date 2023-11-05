@@ -46,3 +46,24 @@ Data columns (total 13 columns):
 }
 
 '''
+
+import pandas as pd
+import json
+
+# Your JSON structure
+json_data = {
+    "Card Number": {"astype": "str"},
+    "Has Chip": {"map": {"YES": 1, "NO": 0}},
+    "Expires": {"to_datetime": {"format": "%m/%Y"}},
+    "Card Limit": {"astype": "int"},
+    "Acct Open Date": {"to_datetime": {"format": "%m/%Y"}},
+    "Card on Dark Web": {"map": {"YES": 1, "NO": 0}}
+}
+
+# Convert the JSON object to a DataFrame
+transformation_df = pd.DataFrame([
+    {"Column": key, "Transformation": str(value)}
+    for key, value in json_data.items()
+])
+# Print the DataFrame
+print(transformation_df)
