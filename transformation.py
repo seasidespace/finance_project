@@ -1,6 +1,6 @@
 import pandas as pd
 import json
-
+import streamlit as st
 
 class DataTransformer:
     def __init__(self, parquet_data, json_rules):
