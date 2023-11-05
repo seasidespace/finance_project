@@ -46,13 +46,10 @@ def main():
         # Get the DataFrame and display it
         df = myFile.get_dataframe()
         if df is not None:
-            st.write("Quick View of the Uploaded File:")
             st.dataframe(df.head())  # Display the first few rows of the DataFrame
 
-    '''
-    Upload the transformation you want to apply
-    '''
-
+ 
+    # Upload the transformation you want to apply
     display_text_as_large("2. Upload the transformation you want to apply")
     
     # Usage in a Streamlit app
