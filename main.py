@@ -61,6 +61,7 @@ def main():
 
     # Initialize transformer to None
     transformer = None
+    transformed_df = None
 
     # Check if both files are uploaded and create the transformer object
     if df_Parquet is not None and json_rule is not None:
@@ -79,25 +80,26 @@ def main():
 
     # title for prompting file upload to snowflake 
     display_text_as_large("4. Export Data to Snowflake SQL Database")
-    
-    connection_params = {
-        "user": st.secrets["connections"]["snowpark"]["user"],
-        "password": st.secrets["connections"]["snowpark"]["password"],
-        "account": st.secrets["connections"]["snowpark"]["account"],
-        "warehouse": st.secrets["connections"]["snowpark"]["warehouse"],
-        "database": st.secrets["connections"]["snowpark"]["database"],
-        "schema": st.secrets["connections"]["snowpark"]["schema"],
-        "role": st.secrets["connections"]["snowpark"]["role"],
-    }
 
-    # initialize the snowflake_uploader
-    snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
-    
-    # Display the connection success message
-    session = create_session()
-    st.success("Connected to Snowflake!")
+    if transformed_df is not None:
+        connection_params = {
+            "user": st.secrets["connections"]["snowpark"]["user"],
+            "password": st.secrets["connections"]["snowpark"]["password"],
+            "account": st.secrets["connections"]["snowpark"]["account"],
+            "warehouse": st.secrets["connections"]["snowpark"]["warehouse"],
+            "database": st.secrets["connections"]["snowpark"]["database"],
+            "schema": st.secrets["connections"]["snowpark"]["schema"],
+            "role": st.secrets["connections"]["snowpark"]["role"],
+        }
 
-    snowflake_uploader.upload_dataframe()
+        # initialize the snowflake_uploader
+        snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
+        
+        # Display the connection success message
+        session = create_session()
+        st.success("Connected to Snowflake!")
+
+        snowflake_uploader.upload_dataframe()
 
 main()
 
