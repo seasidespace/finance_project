@@ -67,6 +67,7 @@ def main():
         transformer = DataTransformer(df_Parquet, json_uploader.get_dataframe())
 
     # Button to apply transformations
+    display_text_as_large("3. Apply Transformation")
     if st.button("Apply Transformations"):
         if transformer:  # Check if transformer is not None
             transformer.apply_transformations()
@@ -77,7 +78,7 @@ def main():
             st.error("Please upload both Parquet and JSON files before applying transformations.")
 
     # title for prompting file upload to snowflake 
-    display_text_as_large("3. Export Data to Snowflake SQL Database")
+    display_text_as_large("4. Export Data to Snowflake SQL Database")
     
     connection_params = {
         "user": st.secrets["connections"]["snowpark"]["user"],

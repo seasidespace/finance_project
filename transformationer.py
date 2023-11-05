@@ -22,9 +22,15 @@ class DataTransformer:
                             self.parquet_data_df[column] = pd.to_datetime(self.parquet_data_df[column], format=params['format'])
                         else:
                             print(f"Unsupported operation: {operation}")
+
+            # Replace spaces with underscores in column names
+            self.parquet_data_df.columns = [col.replace(' ', '_') for col in self.parquet_data_df.columns]
+            # Print success message
             st.success("Transformations applied successfully!")
+            
         except Exception as e:
             st.error(f"An error occurred while applying transformations: {e}")
 
     def get_transformed_dataframe(self):
+
         return self.parquet_data_df
