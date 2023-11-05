@@ -77,8 +77,9 @@ def main():
         else:
             st.error("Please upload both Parquet and JSON files before applying transformations.")
 
-
-    # Upload to Snowflake Section 
+    # title for prompting file upload to snowflake 
+    display_text_as_large("3. Export Data to Snowflake SQL Database")
+    
     connection_params = {
         "user": st.secrets["connections"]["snowpark"]["user"],
         "password": st.secrets["connections"]["snowpark"]["password"],
