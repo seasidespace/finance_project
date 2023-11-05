@@ -28,9 +28,8 @@ class JSONFileUploader:
         """Converts JSON data to a DataFrame and displays it in Streamlit."""
         if self.json_data is not None:
             # Convert the JSON object to a pandas DataFrame
-            self.dataframe = pd.json_normalize(self.json_data)
+            self.dataframe = pd.json_normalize(self.json_data).T.reset_index()
+            self.dataframe.columns = ['Column', 'Transformation']
             # Display the DataFrame in Streamlit
             st.dataframe(self.dataframe)
-
-
 

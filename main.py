@@ -4,7 +4,7 @@ from snowflake.sqlalchemy import URL
 import streamlit as st
 import openai
 from file_uploader import FileUploader
-from JSON_transformation import JSONFileUploader
+from JSON_uploader import JSONFileUploader
 import pandas as pd
 
 
