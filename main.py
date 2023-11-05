@@ -26,16 +26,13 @@ def display_text_as_large(text):
 def main():
     st.title("Data Ingestion Tool")
     
-    '''
-    Upload your dataset for processing
-    '''
-
+    # title for prompting Parquet file 
     display_text_as_large("1. Upload your dataset for processing")
 
     myFile = FileUploader()
 
     # Use the upload_file method to let the user upload a file
-    label = "Only files in Parquet format are permitted."
+    label = "Upload a Parquet file."
     uploaded_file = myFile.upload_file(label, "parquet")
     
 
@@ -49,14 +46,14 @@ def main():
             st.dataframe(df.head())  # Display the first few rows of the DataFrame
 
  
-    # Upload the transformation you want to apply
+    # title for prompting json file 
     display_text_as_large("2. Upload the transformation you want to apply")
     
-    # Usage in a Streamlit app
+    # Upload the transformation you want to apply
     uploader = JSONFileUploader()
     uploader.upload_json_file()
 
-    # Optionally, you can retrieve the JSON data
+    # Retrieve the JSON data
     json_data = uploader.get_json_data()
     if json_data is not None:
         uploader.display_dataframe()
