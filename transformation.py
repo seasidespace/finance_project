@@ -26,5 +26,6 @@ class DataTransformer:
         except Exception as e:
             st.error(f"An error occurred while applying transformations: {e}")
 
+
     def get_transformed_dataframe(self):
         return self.parquet_data_df

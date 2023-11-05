@@ -59,6 +59,7 @@ def main():
     # Check if both files are uploaded and create the transformer object
     if df_Parquet is not None and json_rule is not None:
         transformer = DataTransformer(df_Parquet, json_uploader.get_dataframe())
+        print(df_Parquet)
 
     # Button to apply transformations
     if st.button("Apply Transformations"):
