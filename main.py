@@ -52,7 +52,6 @@ def main():
 
     if json_rule is not None:
         json_uploader.display_dataframe()
-        st.write(json_uploader.get_dataframe())
 
     # Initialize transformer to None
     transformer = None
