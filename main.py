@@ -41,7 +41,7 @@ def main():
         myFile.read_parquet(uploaded_file)
         df_Parquet = myFile.get_dataframe()
         if df_Parquet is not None:
-            st.dataframe(df_Parquet.head())  # Display the first few rows of the DataFrame
+            st.dataframe(df_Parquet)  # Display the first few rows of the DataFrame
 
     # title for prompting json file 
     display_text_as_large("2. Upload the transformation you want to apply")
