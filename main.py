@@ -11,7 +11,7 @@ def main():
     myFile = FileUploader()
 
     # Use the upload_file method to let the user upload a file
-    label = "Drag and drop or click to upload a Parquet file"
+    label = "Only files in Parquet format are permitted."
     uploaded_file = myFile.upload_file(label, "parquet")
     
     # If a file was uploaded, read the Parquet file
