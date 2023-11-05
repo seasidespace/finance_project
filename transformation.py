@@ -15,7 +15,7 @@ class DataTransformer:
                 if column in self.parquet_data_df.columns:
                     for operation, params in transformation.items():
                         if operation == 'astype':
-                            self.parquet_data_df[column] = self.parquet_data_df[column].str.replace(r'\D', '', regex=True).astype(params)
+                            self.parquet_data_df[column] = self.parquet_data_df[column].replace(r'\D', '', regex=True).astype(params)
                         elif operation == 'map':
                             self.parquet_data_df[column] = self.parquet_data_df[column].map(params)
                         elif operation == 'to_datetime':
