@@ -52,7 +52,7 @@ class SnowflakeUploader:
         else:
             # If the table does not exist, create it and insert the data
             try:
-                write_pandas(self.connection, self.dataframe, table_name.upper())
+                write_pandas(self.connection, self.dataframe, table_name.upper(), auto_create_table=True)
                 st.success(f"Table `{table_name}` created and data inserted successfully.")
             except Exception as e:
                 st.error(f"An error occurred while creating the table: {e}")
