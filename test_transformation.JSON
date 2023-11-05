@@ -1,0 +1,8 @@
+{
+    "Card Number": {"astype": "str"},
+    "Has Chip": {"map":{"YES":1, "NO":0}},
+    "Expires": {"to_datetime": {"format": "%m/%Y"}},
+    "Card Limit": {"astype": "int"},
+    "Acct Open Date": {"to_datetime": {"format": "%m/%Y"}},
+    "Card on Dark Web": {"map":{"YES" :1, "NO":0}}
+}

@@ -10,6 +10,8 @@ class FileUploader:
         uploaded_file = st.file_uploader(label, type=[file_type])
         if uploaded_file is not None:
             return uploaded_file
+        else: 
+            st.error("Please upload a Parquet file.")
         return None
 
     # method to read file

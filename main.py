@@ -4,10 +4,12 @@ from snowflake.sqlalchemy import URL
 import streamlit as st
 import openai
 from file_uploader import FileUploader
+from JSON_transformation import JSONFileUploader
+import pandas as pd
 
 
 def display_text_as_large(text):
-    # Define the HTML structure with style
+    ''' Define the HTML structure with style '''
     large_text_html = f"""
         <style>
         .big-font {{
@@ -50,8 +52,16 @@ def main():
     '''
     Upload the transformation you want to apply
     '''
-    
-    display_text_as_large("2. Upload the transformation you want to apply")
 
+    display_text_as_large("2. Upload the transformation you want to apply")
+    
+    # Usage in a Streamlit app
+    uploader = JSONFileUploader()
+    uploader.upload_json_file()
+
+    # Optionally, you can retrieve the JSON data
+    json_data = uploader.get_json_data()
+    if json_data is not None:
+        uploader.display_dataframe()
 
 main()
