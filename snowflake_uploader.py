@@ -58,17 +58,27 @@ class SnowflakeUploader:
     def insert_data_into_existing_table(self, table_name):
         # Here you would have logic to insert into an existing table
         # This includes checking if the table exists and if the columns match
-        cursor = self.connection.cursor()
-        cursor.execute(f"DESC TABLE {table_name.upper()}")
-        table_description = cursor.fetchall()
-
-        # Check if columns match
-        table_columns = [desc[0] for desc in table_description]
-        df_columns = self.dataframe.columns.tolist()
-
-        if set(df_columns).issubset(set(table_columns)):
-            write_pandas(self.connection, self.dataframe, table_name.upper())
+        if not self.table_exists(table_name):
+            # If the table exists, issue a warning in Streamlit
+            st.warning(f"The table `{table_name}` does not exist.")
         else:
-            st.warning('The columns of the DataFrame do not match the columns of the existing table.')
+            try:
+                cursor = self.connection.cursor()
+                cursor.execute(f"DESC TABLE {table_name.upper()}")
+                table_description = cursor.fetchall()
+
+                # Check if columns match
+                table_columns = [desc[0] for desc in table_description]
+                df_columns = self.dataframe.columns.tolist()
+
+                if set(df_columns).issubset(set(table_columns)):
+                    write_pandas(self.connection, self.dataframe, table_name.upper())
+                    st.success(f"Successfully inserted data into Table `{table_name}` ")
+
+                else:
+                    st.warning('The columns of the DataFrame do not match the columns of the existing table.')
+            except Exception as e:
+                st.error(f"An error occurred while creating the table: {e}")
+
 
 
