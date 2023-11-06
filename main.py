@@ -74,7 +74,7 @@ def main():
         if transformer:  # Check if transformer is not None
             transformer.apply_transformations()
             transformed_df = transformer.get_transformed_dataframe()
-            st.session_state['transformed_df'] = "some transformed data" ##
+            st.session_state['transformed_df'] = transformed_df ##
             if transformed_df is not None:
                 st.dataframe(transformed_df)
         else:
