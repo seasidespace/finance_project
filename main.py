@@ -99,7 +99,8 @@ def main():
 
     if st.session_state['transformed_df'] is not None:
         # initialize the snowflake_uploader
-        snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
+        transformed_df = st.session_state['transformed_df']
+        snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
         # upload to snowflake
         snowflake_uploader.upload_dataframe()
 
