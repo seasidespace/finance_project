@@ -73,7 +73,7 @@ class SnowflakeUploader:
 
                 if set(df_columns).issubset(set(table_columns)):
                     write_pandas(self.connection, self.dataframe, table_name.upper())
-                    st.success(f"Successfully inserted data into Table `{table_name}` ")
+                    st.success(f"Successfully inserted data into Table: `{table_name}` ")
 
                 else:
                     st.warning('The columns of the DataFrame do not match the columns of the existing table.')

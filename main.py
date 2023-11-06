@@ -9,6 +9,7 @@ from file_uploader import FileUploader
 from JSON_uploader import JSONFileUploader
 from transformationer import DataTransformer
 from snowflake_uploader import SnowflakeUploader
+from data_analysis import talk_2_ai
 
 def display_text_as_large(text):
     ''' Define the HTML structure with style '''
@@ -103,6 +104,9 @@ def main():
         snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
         # upload to snowflake
         snowflake_uploader.upload_dataframe()
+
+        display_text_as_large("5. Data Analytics powered by AI")
+        talk_2_ai(transformed_df)
 
 main()
 
