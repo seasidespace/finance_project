@@ -27,9 +27,7 @@ class SnowflakeUploader:
 
     def upload_dataframe(self):
         # UI components
-        option = st.selectbox(
-            'Choose your action:', self.options
-        )
+        option = st.selectbox('Choose your action:', self.options )
 
         table_name = st.text_input('Enter the name of the table:')
 

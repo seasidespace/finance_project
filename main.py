@@ -61,8 +61,9 @@ def main():
 
     # Initialize transformer to None
     transformer = None
-    transformed_df = None
-
+    if 'transformed_df' not in st.session_state:
+        st.session_state['transformed_df'] = None
+        
     # Check if both files are uploaded and create the transformer object
     if df_Parquet is not None and json_rule is not None:
         transformer = DataTransformer(df_Parquet, json_uploader.get_dataframe())
@@ -73,6 +74,7 @@ def main():
         if transformer:  # Check if transformer is not None
             transformer.apply_transformations()
             transformed_df = transformer.get_transformed_dataframe()
+            st.session_state['transformed_df'] = "some transformed data" ##
             if transformed_df is not None:
                 st.dataframe(transformed_df)
         else:
@@ -95,10 +97,9 @@ def main():
     session = create_session()
     st.success("Connected to Snowflake!")
 
-    transformed_df = transformer.get_transformed_dataframe()
-    if transformed_df is not None:
+    if st.session_state['transformed_df'] is not None:
         # initialize the snowflake_uploader
-        snowflake_uploader = SnowflakeUploader(connection_params, transformed_df)
+        snowflake_uploader = SnowflakeUploader(connection_params, transformer.get_transformed_dataframe())
         # upload to snowflake
         snowflake_uploader.upload_dataframe()
 
