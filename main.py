@@ -33,8 +33,13 @@ def create_session():
 
 
 def main():
-    st.title("Data Ingestion Tool")
-    
+    st.title("❄️Snowflake Data Ingestion Tool with AI Data Analytics")
+
+    # display the sidebar
+    with open("ui/sidebar.md", "r") as sidebar_file:
+        sidebar_content = sidebar_file.read()
+    st.sidebar.markdown(sidebar_content)
+
     # title for prompting Parquet file 
     display_text_as_large("1. Upload your dataset for processing")
 
@@ -108,8 +113,6 @@ def main():
         display_text_as_large("5. Data Analytics powered by AI")
         talk_2_ai(transformed_df)
 
-main()
+if __name__ == "__main__":
+    main()
 
-
-
-    

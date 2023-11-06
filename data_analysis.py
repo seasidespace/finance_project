@@ -24,25 +24,21 @@ def talk_2_ai(df):
 
                 #retrive the log
                 mylog = pandas_ai.logs
-                print(mylog)
-
                 mylog = mylog[-2]['msg']
-                print(mylog)
-
                 # Remove the "Answer: " part
                 mylog = mylog.replace("Answer: ", "")
                 # Replace single quotes with double quotes to make it a valid JSON string
                 mylog = mylog.replace("'", '"')
                 # Parse the JSON string into a JSON object
                 my_json = json.loads(mylog)
-                print(mylog)
 
                 if my_json['type'] == 'string':
                     st.write(my_json['value'])
-                else:
+                elif my_json['type'] == 'dataframe':
+                    st.dataframe(my_json['value'])
+                elif my_json['type'] == 'plot':
                     st.image("./temp_chart.png", caption='', use_column_width=True)
 
         else:
             st.warning("please enter a prompt")
 
-            
