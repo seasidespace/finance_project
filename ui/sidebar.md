@@ -25,4 +25,6 @@ The Snowflake data ingestion tool offers features for uploading data, cleansing 
     - The AI can be prompted to perform quick analyses, such as generating a graph or answering questions based on the dataset.
 
 
-    
+    - Sample Prompt 1: Provide summarized insights from the data
+    - Sample Prompt 2: Graph scatter plot between credit limit and account open date
+    - Sample Prompt 3: Graph distribution of the credit card brand
