@@ -44,3 +44,5 @@ def talk_2_ai(df):
 
         else:
             st.warning("please enter a prompt")
+
+            
