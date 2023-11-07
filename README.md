@@ -1,5 +1,3 @@
-# finance_project
-
 # Snowflake Data Ingestion Tool 
 
 The Snowflake data ingestion tool offers features for uploading data, cleansing data, ingesting data, and AI-driven data analytics, all designed to enhance productivity.
